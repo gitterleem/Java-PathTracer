@@ -282,16 +282,16 @@ public class Scene {
 
 		// light
 		triangles.add(new Triangle(
-				new Vec3f(-0.22f, 1.98f, 0.22f),
-				new Vec3f(-0.22f, 1.98f, -0.22f),
-				new Vec3f(0.22f, 1.98f, -0.22f),
+				new Vec3f(-0.22f, 1.9998f, 0.22f),
+				new Vec3f(-0.22f, 1.9998f, -0.22f),
+				new Vec3f(0.22f, 1.9998f, -0.22f),
 				new Vec3f(0.78f, 0.78f, 0.78f),
 				new Vec3f(17f, 12f, 4f)
 		));
 		triangles.add(new Triangle(
-				new Vec3f(-0.22f, 1.98f, 0.22f),
-				new Vec3f(0.22f, 1.98f, -0.22f),
-				new Vec3f(0.22f, 1.98f, 0.22f),
+				new Vec3f(-0.22f, 1.9998f, 0.22f),
+				new Vec3f(0.22f, 1.9998f, -0.22f),
+				new Vec3f(0.22f, 1.9998f, 0.22f),
 				new Vec3f(0.78f, 0.78f, 0.78f),
 				new Vec3f(17f, 12f, 4f)
 		));
