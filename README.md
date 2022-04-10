@@ -4,7 +4,7 @@
 
 It ain't much, but it's honest work!
 
-![](render-256.png)
+![](example-render-2048.png)
 *example render with 256 samples per pixel*
 
 # Getting started

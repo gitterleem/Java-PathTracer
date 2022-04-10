@@ -51,7 +51,7 @@ public class Scene {
 
 		int cores = Runtime.getRuntime().availableProcessors();
 		System.out.println("\t> available cores: " + cores);
-		int threadCount = cores - 2;
+		int threadCount = cores - 1;
 		System.out.println("\t> will render using: " + threadCount + " threads");
 
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
@@ -98,7 +98,7 @@ public class Scene {
 
 		Vec3f color = new Vec3f();
 
-		int subSamples = 48;
+		int subSamples = 2048;
 
 		for (int sample = 0; sample < subSamples; sample++) {
 			float px = (2f * ((x + random.nextFloat()) / width) - 1f) * aspect * scale;
@@ -128,17 +128,20 @@ public class Scene {
 			return bgColor;
 		}
 
-		Vec3f f = new Vec3f(triangle.getColor());
-		float p = triangle.getColor().max();
+		Vec3f color = new Vec3f(triangle.getColor());
 
 		// russian roulette
+		float p = triangle.getColor().max();
 		if (++depth > 6) {
 			if (random.nextFloat() < p) {
-				f.mul(1f / p);
+				color.mul(1f / p);
 			} else {
 				return triangle.getEmission() != null ? triangle.getEmission() : new Vec3f(0, 0, 0);
 			}
 		}
+
+		// TODO: cheat and check if point of intersect is illuminated
+
 
 		// diffuse
 		Vec3f diffDir = randomVector(triangle.getNormal());
@@ -146,7 +149,7 @@ public class Scene {
 
 		Vec3f emission = triangle.getEmission() != null ? new Vec3f(triangle.getEmission()) : new Vec3f(0, 0, 0);
 
-		return emission.add(f.mul(radiance(diffOrigin, diffDir, depth)));
+		return emission.add(color.mul(radiance(diffOrigin, diffDir, depth)));
 	}
 
 	private Triangle intersectScene(Vec3f rayOrigin, Vec3f rayDirection, Vec3f outIntersect, int depth) {
@@ -282,9 +285,9 @@ public class Scene {
 
 		// light
 		triangles.add(new Triangle(
-				new Vec3f(-0.22f, 1.9998f, 0.22f),
-				new Vec3f(-0.22f, 1.9998f, -0.22f),
-				new Vec3f(0.22f, 1.9998f, -0.22f),
+				new Vec3f(-0.22f, 1.998f, 0.22f),
+				new Vec3f(-0.22f, 1.998f, -0.22f),
+				new Vec3f(0.22f, 1.998f, -0.22f),
 				new Vec3f(0.78f, 0.78f, 0.78f),
 				new Vec3f(17f, 12f, 4f)
 		));
