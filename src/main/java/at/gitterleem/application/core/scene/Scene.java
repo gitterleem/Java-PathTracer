@@ -39,8 +39,8 @@ public class Scene {
 		chunks = new ConcurrentLinkedDeque<>();
 
 		// split into chunks of 100 x 100 px;
-		for (int x = 0; x < width; x+= 100) {
-			for (int y = 0; y < height; y+= 100) {
+		for (int x = 0; x < width; x += 100) {
+			for (int y = 0; y < height; y += 100) {
 				try {
 					chunks.add(new Chunk(x, Math.min(x + 100, width), y, Math.min(y + 100, height)));
 				} catch (IllegalAccessError e) {
@@ -48,7 +48,6 @@ public class Scene {
 				}
 			}
 		}
-
 
 		int cores = Runtime.getRuntime().availableProcessors();
 		System.out.println("\t> available cores: " + cores);
@@ -61,7 +60,7 @@ public class Scene {
 
 		for (int i = 0; i < threadCount; i++) {
 			Thread t = new Thread(() -> {
-				while(!chunks.isEmpty()) {
+				while (!chunks.isEmpty()) {
 					Chunk chunk = chunks.poll();
 
 					for (int x = chunk.getXStart(); x < chunk.getXEnd(); x++) {
@@ -85,7 +84,7 @@ public class Scene {
 
 		Duration duration = Duration.ofNanos(System.nanoTime() - startTime);
 
-		System.out.println("\t> Rendering finished.\n\t\t>Took: " + duration.toHoursPart() + "h " + duration.toMinutesPart() + "min " + duration.toSecondsPart() + "s " + duration.toMillisPart() + "ms " + duration.toNanosPart() + "ns");
+		System.out.println("\t> Rendering finished.\n\t>Took: " + duration.toHoursPart() + "h " + duration.toMinutesPart() + "min " + duration.toSecondsPart() + "s " + duration.toMillisPart() + "ms " + duration.toNanosPart() + "ns");
 
 		showImage(img);
 
@@ -120,7 +119,7 @@ public class Scene {
 		return new Color(r, g, b);
 	}
 
-	Vec3f radiance(Vec3f rayOrigin, Vec3f rayDirection, int depth) {
+	private Vec3f radiance(Vec3f rayOrigin, Vec3f rayDirection, int depth) {
 		Vec3f intersect = new Vec3f();
 		Triangle triangle = intersectScene(rayOrigin, rayDirection, intersect, depth);
 
@@ -149,15 +148,6 @@ public class Scene {
 
 		return emission.add(f.mul(radiance(diffOrigin, diffDir, depth)));
 	}
-
-	/*
-	   if (obj.refl == DIFF){                  // Ideal DIFFUSE reflection
-	     double r1=2*M_PI*erand48(Xi), r2=erand48(Xi), r2s=sqrt(r2);
-	     Vec w=nl, u=((fabs(w.x)>.1?Vec(0,1):Vec(1))%w).norm(), v=w%u;
-	     Vec d = (u*cos(r1)*r2s + v*sin(r1)*r2s + w*sqrt(1-r2)).norm();
-	     return obj.e + f.mult(radiance(Ray(x,d),depth,Xi));
-	    }
-	 */
 
 	private Triangle intersectScene(Vec3f rayOrigin, Vec3f rayDirection, Vec3f outIntersect, int depth) {
 		float minDistance = Float.MAX_VALUE;

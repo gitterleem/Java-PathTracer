@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Random;
-
 @NoArgsConstructor
 public class Triangle {
 
@@ -43,7 +41,7 @@ public class Triangle {
 	}
 
 	public Vec3f getNormal() {
-		if(normal != null) {
+		if (normal != null) {
 			return normal;
 		}
 
@@ -60,7 +58,7 @@ public class Triangle {
 		// check if ray and triangle is parallel
 		Vec3f h = Vec3f.cross(rayDirection, edge2);
 		float a = edge1.dot(h);
-		if(Math.abs(a) < epsilon) {
+		if (Math.abs(a) < epsilon) {
 			return false;
 		}
 
@@ -68,41 +66,25 @@ public class Triangle {
 		float f = 1f / a;
 		Vec3f s = Vec3f.sub(rayOrigin, v1);
 		float u = f * s.dot(h);
-		if(u < 0f || u > 1f) {
+		if (u < 0f || u > 1f) {
 			return false;
 		}
 
 		Vec3f q = Vec3f.cross(s, edge1);
 		float v = f * rayDirection.dot(q);
-		if(v < 0f || u + v > 1f) {
+		if (v < 0f || u + v > 1f) {
 			return false;
 		}
 
 		// get distance t from ray origin to intersect
 		float t = f * edge2.dot(q);
 
-		if(t > epsilon) {
+		if (t > epsilon) {
 			outIntersectPoint.set(Vec3f.add(rayOrigin, Vec3f.mul(rayDirection, t)));
 			return true;
 		}
 
 		return false;
-	}
-
-	// TODO: check if this is uniform
-	// https://stackoverflow.com/questions/19654251/random-point-inside-triangle-inside-java
-	public Vec3f randomSamplePoint(Random random) {
-			float r1 = random.nextFloat();
-			float r2 = random.nextFloat();
-
-			if(r1 + r2 > 1f) {
-				r1 = 1f - r1;
-				r2 = 1f - r2;
-			}
-
-			float a = 1f - r1 - r2;
-
-			return Vec3f.mul(v1, a).add(Vec3f.mul(v2, r1)).add(Vec3f.mul(v3, r2));
 	}
 
 }
